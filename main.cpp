@@ -79,10 +79,19 @@ int main()
 	{
 		return 1;
 	}
-	int * t = new int[n];
+	int * t = nullptr;
+	try
+	{
+		t = new int[n];
+	} catch (const std::bad_alloc &)
+	{
+		return 2;
+	}
+	
 	input(t, n);
 	if (std::cin.fail()) 
 	{
+		delete[] t;
 		return 1;
 	}
 	for (size_t i = 0; i<n; ++i)
@@ -90,14 +99,22 @@ int main()
 		std::cout << t[i] << " ";
 	}
 	std::cout << "\n";
-	delete[] t;
-
-	size_t * lns = new size_t[rows];
+	size_t * lns = nullptr;
+	try
+	{
+		lns = new size_t[rows];
+	} catch (const std::bad_alloc &)
+	{
+		delete[] t;
+		return 2;
+	}
 	for (size_t i = 0; i < rows; ++i)
 	{
 		std::cin >> lns[i];
 		if (std::cin.fail())
 		{
+			delete[] t;
+			delete[] lns;
 			return 1;
 		}
 	}
@@ -106,13 +123,20 @@ int main()
 		std::cout << lns[j] << " ";
 	}
 	std::cout << "\n";
-	delete[] lns;
-		
+	
 	int ** res = nullptr;
+	try
+	{
 	res = convert(t, n, lns, rows);
+	} catch (const std::bad_alloc &)
+	{
+		return 2;
+	}
 	output(res, rows, lns);
 	rm(res,rows);
-}	
+	delete[] t;
+	delete[] lns;
+}
 	
 	
 	/*
