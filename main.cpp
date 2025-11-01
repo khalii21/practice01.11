@@ -51,39 +51,68 @@ void output(const int * const *mtx, int r, const size_t * lns)
 	}
 }
 
+int **convert (const int * t, size_t n, const size_t * lns, size_t rows)
+{
+	int **res = make(rows, lns);
+	size_t a = 0;
+	while (a < n)
+	{
+		for (size_t j = 0; j < rows; ++j) 
+		{
+			for (size_t i = 0; i < lns[j]; ++i)
+			{	
+				res[j][i] = t[a];
+				++a;
+			}
+		}
+	}
+	return res;
+}
+
 int main()
 {
 	size_t n = 0;
 	size_t rows = 0;
 	std::cin >> n >> rows;
 	
+	if (std::cin.fail())
+	{
+		return 1;
+	}
 	int * t = new int[n];
 	input(t, n);
+	if (std::cin.fail()) 
+	{
+		return 1;
+	}
 	for (size_t i = 0; i<n; ++i)
 	{
 		std::cout << t[i] << " ";
 	}
 	std::cout << "\n";
 	delete[] t;
-	
+
 	size_t * lns = new size_t[rows];
-	
 	for (size_t i = 0; i < rows; ++i)
 	{
 		std::cin >> lns[i];
+		if (std::cin.fail())
+		{
+			return 1;
+		}
 	}
-	
 	for (size_t j = 0; j < rows; ++j)
 	{
 		std::cout << lns[j] << " ";
 	}
 	std::cout << "\n";
 	delete[] lns;
+		
 	int ** res = nullptr;
 	res = convert(t, n, lns, rows);
 	output(res, rows, lns);
 	rm(res,rows);
-	
+}	
 	
 	
 	/*
@@ -107,8 +136,5 @@ int main()
 	if (std::cin.fail())
 	{
 		rm(mtx, rows);
-		return 1;
-	}
-	output(mtx, rows, cols);
-	rm(mtx, rows); */
-}
+		ret
+	*/
