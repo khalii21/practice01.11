@@ -1,7 +1,14 @@
 #include <iostream>
 int **make(int r, int c);
 void output(const int * const *mtx);
-void rm(int **mtx);
+void rm(int **mtx, int r)
+{
+for (size_t i = 0; i < r; ++i) 
+{
+	delete[] mtx[i];
+}
+delete[] mtx;
+}
 int main()
 {
 int rows = 0;
