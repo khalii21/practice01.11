@@ -1,16 +1,17 @@
 #include <iostream>
-void rm(int **mtx, int r);
-void output(const int * const *mtx, int r, int c);
-void input(int **mtx, int r, int c);
+void rm(int **mtx, size_t r);
+void output(const int * const *mtx, int r, const size_t * lns);
+void input(int *mtx, size_t n);
+int **convert (const int * t, size_t n, const size_t * lns, size_t rows);
 
-int **make(int r, int c)
+int **make(int r, const size_t *lns)
 {
 	int **mtx = new int *[r];
 	for (size_t i = 0; i < r; ++i)
 	{
 		try 
 		{
-			mtx[i] = new int[c]; //new int[lns[i]]
+			mtx[i] = new int[lns[i]];
 		}
 		catch(const std::bad_alloc &)
 		{
@@ -21,7 +22,7 @@ int **make(int r, int c)
 	return mtx;
 }
 
-void rm(int **mtx, int r)
+void rm(int **mtx, size_t r)
 {
 	for (size_t i = 0; i < r; ++i) 
 	{
@@ -30,22 +31,19 @@ void rm(int **mtx, int r)
 	delete[] mtx;
 }
 
-void input(int **mtx, int r, int c)
+void input(int *mtx, size_t n)
 {
-	for (size_t i = 0; i < r; ++i)
+	for (size_t i = 0; i < n; ++i)
 	{
-		for (size_t j = 0; j < c; ++j)
-		{
-			std::cin >> mtx[i][j];
-		}
+		std::cin >> mtx[i];
 	}
 }
 
-void output(const int * const *mtx, int r, int c)
+void output(const int * const *mtx, int r, const size_t * lns)
 {
 	for (size_t i = 0; i < r; ++i)
 	{
-		for (size_t j = 0; j < c; ++j)
+		for (size_t j = 0; j < lns[i]; ++j)
 		{
 			std::cout << mtx[i][j] << " ";	
 		}
@@ -55,6 +53,40 @@ void output(const int * const *mtx, int r, int c)
 
 int main()
 {
+	size_t n = 0;
+	size_t rows = 0;
+	std::cin >> n >> rows;
+	
+	int * t = new int[n];
+	input(t, n);
+	for (size_t i = 0; i<n; ++i)
+	{
+		std::cout << t[i] << " ";
+	}
+	std::cout << "\n";
+	delete[] t;
+	
+	size_t * lns = new size_t[rows];
+	
+	for (size_t i = 0; i < rows; ++i)
+	{
+		std::cin >> lns[i];
+	}
+	
+	for (size_t j = 0; j < rows; ++j)
+	{
+		std::cout << lns[j] << " ";
+	}
+	std::cout << "\n";
+	delete[] lns;
+	int ** res = nullptr;
+	res = convert(t, n, lns, rows);
+	output(res, rows, lns);
+	rm(res,rows);
+	
+	
+	
+	/*
 	int rows = 0;
 	int cols = 0;
 	std::cin >> rows >> cols;
@@ -62,7 +94,7 @@ int main()
 	{
 		return 1;
 	}
-	int **mtx = nullptr;
+	int *t = nullptr;
 	try
 	{
 		mtx = make(rows, cols);
@@ -78,5 +110,5 @@ int main()
 		return 1;
 	}
 	output(mtx, rows, cols);
-	rm(mtx, rows);
+	rm(mtx, rows); */
 }
